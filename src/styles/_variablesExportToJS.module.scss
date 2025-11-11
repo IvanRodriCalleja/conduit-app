@@ -1,0 +1,7 @@
+@import './variables';
+
+// Export CSS vars to _variables.ts.
+:export {
+  animationDefaultTime: $animationDefaultTime;
+  baseFontSize: $baseFontSize;
+}

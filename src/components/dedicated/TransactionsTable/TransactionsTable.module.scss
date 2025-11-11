@@ -1,0 +1,24 @@
+.tableHeader {
+  @include typoTableHeader;
+  display: flex;
+  border-bottom: 0.1rem solid $color-cyan;
+}
+
+.column {
+  padding: 1rem;
+}
+
+.column-- {
+  &amount {
+    flex: 0 0 25%;
+    text-align: right;
+  }
+
+  &payee {
+    flex: 0 0 60%;
+  }
+
+  &date {
+    flex: 0 0 15%;
+  }
+}

@@ -1,0 +1,17 @@
+/* UI defaults */
+
+$defaultRadius: 0.5rem;
+
+
+/* Helpers */
+
+@mixin container {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@mixin defaultTransition {
+  transition: all $animationDefaultTime ease-in-out;
+}

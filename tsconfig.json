@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "src",
+    "outDir": "./dist",
+    "checkJs": false,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["src", "declaration.d.ts", "vite.config.ts"],
+  "exclude": [
+    "dist"
+  ],
+}

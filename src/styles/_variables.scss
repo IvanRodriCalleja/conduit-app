@@ -1,0 +1,10 @@
+/*
+  Do not import this file to JS/TS directly.
+  Instead, use _variablesExportToJS proxy and use variables.ts allowing webpack to tree shake them.
+*/
+
+/* animations */
+$animationDefaultTime: 400ms;
+
+/* base font-size */
+$baseFontSize: 10px;

@@ -1,0 +1,8 @@
+.direnv
+.DS_Store
+.idea
+.vscode/settings.json
+.yarn
+build
+node_modules
+dist

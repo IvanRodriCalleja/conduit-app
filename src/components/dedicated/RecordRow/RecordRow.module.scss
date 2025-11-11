@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: $color-white;
+  border-bottom: 0.1rem solid $color-gray-lighter;
+
+  &:nth-child(even) {
+    background-color: $color-gray-lightest;
+  }
+}
+
+.column {
+  @include typoContent;
+  & {
+    color: $color-gray-darker;
+    padding: 1rem;
+  }
+}

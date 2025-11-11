@@ -1,0 +1,78 @@
+@mixin fontMainFamily {
+  font-family: pt-sans, Arial, sans-serif;
+}
+
+@mixin fontMainRegular {
+  @include fontMainFamily;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin fontMainBold {
+  @include fontMainFamily;
+  font-weight: 700;
+  font-style: normal;
+}
+
+// Headers & elements
+
+@mixin typoHeader1 {
+  color: $color-black;
+  @include fontMainBold;
+  font-size: 3.2rem;
+  line-height: 1.5;
+
+  @media #{$tablet-down} {
+    font-size: 2.8rem;
+  }
+
+  @media #{$phone-only} {
+    font-size: 2.4rem;
+  }
+}
+
+@mixin typoHeader2 {
+  @include fontMainBold;
+  color: $color-black;
+  font-size: 2.4rem;
+  line-height: 1.5;
+
+  @media #{$tablet-down} {
+    font-size: 2.2rem;
+  }
+
+  @media #{$phone-only} {
+    font-size: 2.0rem;
+  }
+}
+
+@mixin typoHeader3 {
+  @include fontMainRegular;
+  font-size: 2rem;
+  line-height: 1.5;
+  color: $color-black;
+
+  @media #{$tablet-down} {
+    font-size: 1.8rem;
+  }
+}
+
+@mixin typoContent {
+  @include fontMainRegular;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: $color-gray-dark;
+}
+
+// Code
+
+@mixin fontCodeFamily {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+// Tables
+
+@mixin typoTableHeader {
+  @include fontMainBold;
+  font-size: 1.4rem;
+}

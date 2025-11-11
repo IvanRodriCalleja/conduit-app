@@ -1,0 +1,204 @@
+@mixin square($dimension) {
+  min-width: $dimension;
+  max-width: $dimension;
+  min-height: $dimension;
+  max-height: $dimension;
+}
+
+.button {
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+  outline: none;
+  letter-spacing: 0.1rem;
+  line-height: 1.8rem;
+  @include defaultTransition;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .label {
+    font-weight: inherit;
+    order: 2;
+  }
+
+  .labelDesktop {
+    &:not(.isOnlyLabel) {
+      display: none;
+      @media #{$screen-small-up} {
+        display: initial;
+      }
+    }
+  }
+
+  .labelMobile {
+    @media #{$screen-small-up} {
+      display: none;
+    }
+  }
+}
+
+.iconContainer {
+  display: inline-flex;
+  align-items: center;
+  &.iconPosition--left {
+    order: 1;
+    &.isLabel {
+      padding-right: 0.6rem;
+    }
+  }
+  &.iconPosition--right {
+    order: 3;
+    &.isLabel {
+      padding-left: 0.6rem;
+    }
+  }
+}
+
+.padding-- {
+  &none {
+    padding: 0;
+  }
+  &small {
+    padding: 0.5rem 1rem;
+  }
+  &normal {
+    padding: 1.2rem 1.6rem;
+  }
+  &big {
+    padding: 1.6rem 2.4rem;
+  }
+}
+
+.width-- {
+  &auto {
+    min-width: auto;
+    max-width: initial;
+  }
+  &adapting {
+    width: 100%;
+  }
+  &normal {
+    min-width: 16rem;
+    max-width: 38.4rem;
+  }
+  &medium {
+    max-width: 19.2rem;
+    width: 19.2rem;
+  }
+}
+
+.variant-- {
+  &primary {
+    color: $color-white;
+    border: 0.1rem solid $color-cyan;
+    background-color: $color-cyan;
+    .spinner {
+      border-color: $color-white;
+    }
+
+    &:hover {
+      background-color: $color-cyan-dark;
+      border-color: $color-cyan-dark;
+    }
+  }
+
+  &secondary {
+    color: $color-cyan-dark;
+    border: 0.1rem solid $color-cyan;
+    background-color: $color-white;
+    .spinner {
+      border-color: $color-cyan;
+    }
+
+    &:hover {
+      background-color: $color-cyan-lighter;
+    }
+  }
+
+  &red {
+    color: $color-white;
+    border: 0.1rem solid $color-red;
+    background-color: $color-red;
+    .spinner {
+      border-color: $color-cyan;
+    }
+
+    &:hover {
+      background-color: $color-red-dark;
+      border-color: $color-red-dark;
+    }
+  }
+
+  &link {
+    @include typoContent;
+    & {
+      text-transform: initial;
+      background: none;
+      color: $color-black;
+      letter-spacing: 0;
+    }
+
+    &.isDisabled {
+      background-color: transparent;
+      text-decoration: none;
+    }
+  }
+
+  &icon {
+    background: transparent;
+    transition: transform 150ms ease-in-out;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.iconSize-- {
+  &regular {
+    @include square(3.6rem);
+  }
+  &small {
+    @include square(2.4rem);
+    padding: 0;
+  }
+  &extraSmall {
+    @include square(1.6rem);
+  }
+}
+
+.contentPosition-- {
+  &left {
+    justify-content: flex-start;
+  }
+
+  &center {
+    justify-content: center;
+  }
+
+  &right {
+    justify-content: flex-end;
+  }
+}
+
+.isDisabled,
+.isDisabled:hover {
+  background-color: $color-gray-lighter;
+  color: $color-gray;
+  pointer-events: none;
+}
+
+.isLoading {
+  cursor: wait;
+  padding-left: 4rem;
+  padding-right: 4rem;
+
+  &.link {
+    background-color: initial;
+  }
+}

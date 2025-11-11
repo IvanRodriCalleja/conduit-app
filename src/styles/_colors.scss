@@ -1,0 +1,48 @@
+/*
+  Do not import this file to JS/TS directly.
+  Instead, use _colorsExportToJS proxy and use colors.ts allowing webpack to tree shake them.
+*/
+
+$color-black: #000000;
+$color-white: #ffffff;
+
+$color-cyan-darker: #0b96c0;
+$color-cyan-dark: #0ca6d4;
+$color-cyan: #00b6ed;
+$color-cyan-light: #71deff;
+$color-cyan-lighter: #d4f5ff;
+$color-cyan-lightest: #EEFBFF;
+
+$color-gray-darkest: #222222;
+$color-gray-darker: #333333;
+$color-gray-dark: #666666;
+$color-gray: #999999;
+$color-gray-light: #dddddd;
+$color-gray-lighter: #eeeeee;
+$color-gray-lightest: #fafafa;
+
+$color-green-dark: #8cb51f;
+$color-green: #95c11f;
+$color-green-light: #a0ce23;
+
+$color-navy-dark: #044580;
+$color-navy: #00539f;
+$color-navy-light: #005aad;
+
+$color-orange-dark: #d17914;
+$color-orange: #e98d15;
+$color-orange-light: #f7a73f;
+
+$color-red-dark: #b20b10;
+$color-red: #eb2329;
+$color-red-light: #f5393f;
+$color-red-lighter: #f5393f;
+$color-red-lightest: #ff8185;
+
+$color-yellow-dark: #dddd00;
+$color-yellow: #ffff00;
+
+$color-pastel-blue: #7a9bce;
+$color-pastel-green: #89cda5;
+$color-pastel-red: #f0595e;
+$color-pastel-yellow: #febf49;

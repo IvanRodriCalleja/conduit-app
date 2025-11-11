@@ -1,0 +1,17 @@
+.spinner {
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%;
+  border-width: 0.2rem;
+  border-style: solid;
+  border-color: $color-gray-lighter;
+  border-left-color: transparent !important; // !important added because of different colors of Spinner and its border
+  animation: spinner 3s infinite linear;
+}
+
+@keyframes spinner {
+  100% {
+    transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

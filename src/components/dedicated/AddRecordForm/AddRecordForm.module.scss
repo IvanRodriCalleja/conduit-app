@@ -1,0 +1,62 @@
+.root {
+  @include container;
+  & {
+    margin-top: 3rem;
+    padding: 1.5rem 0.5rem 2rem;
+    border-top: 0.1rem solid $color-cyan;
+    background-color: $color-cyan-lightest;
+  }
+}
+
+.header {
+  @include typoHeader3;
+  & {
+    margin: 0 0.5rem 1rem;
+  }
+}
+
+.form {
+  display: flex;
+}
+
+.fields {
+  width: 100%;
+  display: flex;
+}
+
+.buttonAdd {
+  flex: 6rem 0 0;
+  margin: 0 0.5rem;
+}
+
+.column {
+  @include typoContent;
+  & {
+    padding: 0 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    @include typoContent;
+    padding: 0.5rem;
+    border-radius: $defaultRadius;
+    border: 0.1rem solid $color-cyan;
+    color: $color-black;
+
+    &:focus {
+      outline: $color-cyan-darker;
+    }
+
+    &.hasError {
+      border-color: $color-red;
+    }
+  }
+}
+
+.column-- {
+  &amount {
+    input {
+      text-align: right;
+    }
+  }
+}

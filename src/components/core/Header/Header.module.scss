@@ -1,0 +1,15 @@
+.root {
+  background-color: $color-gray-darker;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  @include container;
+  @include typoHeader2;
+  & {
+    color: $color-white;
+    text-transform: uppercase;
+  }
+}

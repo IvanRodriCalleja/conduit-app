@@ -1,0 +1,40 @@
+@import 'colors';
+
+// CSS vars export for _colors.ts.
+:export {
+  colorBlack: $color-black;
+  colorCyan: $color-cyan;
+  colorCyanDark: $color-cyan-dark;
+  colorCyanDarker: $color-cyan-darker;
+  colorCyanLight: $color-cyan-light;
+  colorCyanLighter: $color-cyan-lighter;
+  colorCyanLightest: $color-cyan-lightest;
+  colorGray: $color-gray;
+  colorGrayDark: $color-gray-dark;
+  colorGrayDarker: $color-gray-darker;
+  colorGrayDarkest: $color-gray-darkest;
+  colorGrayLight: $color-gray-light;
+  colorGrayLighter: $color-gray-lighter;
+  colorGrayLightest: $color-gray-lightest;
+  colorGreen: $color-green;
+  colorGreenDark: $color-green-dark;
+  colorGreenLight: $color-green-light;
+  colorNavy: $color-navy;
+  colorNavyDark: $color-navy-dark;
+  colorNavyLight: $color-navy-light;
+  colorOrange: $color-orange;
+  colorOrangeDark: $color-orange-dark;
+  colorOrangeLight: $color-orange-light;
+  colorPastelBlue: $color-pastel-blue;
+  colorPastelGreen: $color-pastel-green;
+  colorPastelRed: $color-pastel-red;
+  colorPastelYellow: $color-pastel-yellow;
+  colorRed: $color-red;
+  colorRedDark: $color-red-dark;
+  colorRedLight: $color-red-light;
+  colorRedLighter: $color-red-lighter;
+  colorRedLightest: $color-red-lightest;
+  colorWhite: $color-white;
+  colorYellow: $color-yellow;
+  colorYellowDark: $color-yellow-dark;
+}
