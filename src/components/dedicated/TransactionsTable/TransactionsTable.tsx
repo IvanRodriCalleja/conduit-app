@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import cx from 'classnames';
 
 import RecordRow from 'components/dedicated/RecordRow/RecordRow';
-import { useTransactions } from 'repositories/transactionsRepository';
+import { useTransactions, useNewlyAddedTransactionId } from 'repositories/transactionsRepository';
 
 import { TransactionsTableSkeleton } from './TransactionsTableSkeleton';
 import { TransactionsTableError } from './TransactionsTableError';
@@ -17,6 +17,7 @@ export const columnStyles = {
 
 const TransactionsTable: FC = () => {
   const { transactions, load } = useTransactions();
+  const newlyAddedId = useNewlyAddedTransactionId();
 
   useEffect(() => {
     load();
@@ -37,6 +38,7 @@ const TransactionsTable: FC = () => {
               key={transaction.id}
               columnStyles={columnStyles}
               transactionRecord={transaction}
+              isNew={transaction.id === newlyAddedId}
             />
           ))}
         </div>

@@ -1,9 +1,27 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { useSelector } from 'react-redux';
 import RecordRow from './RecordRow';
 import { TransactionRecord } from 'store/types';
+import * as useConduitDispatchModule from 'store/useConduitDispatch';
+
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+}));
+
+jest.mock('store/useConduitDispatch', () => ({
+  useConduitDispatch: jest.fn(),
+}));
 
 describe('RecordRow', () => {
+  const mockDispatch = jest.fn();
+  const mockUseSelector = useSelector as jest.Mock;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useConduitDispatchModule.useConduitDispatch as jest.Mock).mockReturnValue(mockDispatch);
+    mockUseSelector.mockReturnValue(null);
+  });
   const mockColumnStyles = {
     amount: 'column-amount',
     date: 'column-date',

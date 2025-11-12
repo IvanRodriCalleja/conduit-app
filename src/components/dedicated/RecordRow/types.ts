@@ -8,4 +8,5 @@ export interface RecordRowProps {
     memo: string;
   };
   transactionRecord: TransactionRecord;
+  isNew?: boolean;
 }

@@ -2,11 +2,24 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AddRecordForm from './AddRecordForm';
+import * as transactionsRepository from 'repositories/transactionsRepository';
+
+jest.mock('repositories/transactionsRepository', () => ({
+  useAddTransaction: jest.fn(),
+}));
 
 describe('AddRecordForm', () => {
+  const mockAddTransaction = jest.fn();
+
   beforeEach(() => {
     jest.spyOn(console, 'log').mockImplementation();
     jest.spyOn(console, 'error').mockImplementation();
+
+    (transactionsRepository.useAddTransaction as jest.Mock).mockReturnValue({
+      addTransaction: mockAddTransaction,
+    });
+
+    mockAddTransaction.mockClear();
   });
 
   afterEach(() => {
@@ -174,7 +187,7 @@ describe('AddRecordForm', () => {
   describe('Form Submission', () => {
     it('should submit form with valid data', async () => {
       const user = userEvent.setup();
-      const consoleLogSpy = jest.spyOn(console, 'log');
+      mockAddTransaction.mockResolvedValue({ id: 'new-id' });
 
       render(<AddRecordForm />);
 
@@ -191,11 +204,12 @@ describe('AddRecordForm', () => {
 
       await waitFor(
         () => {
-          expect(consoleLogSpy).toHaveBeenCalledWith(
+          expect(mockAddTransaction).toHaveBeenCalledWith(
             expect.objectContaining({
-              date: '2024-01-15T10:30',
+              timestamp: new Date('2024-01-15T10:30').getTime(),
               payee: 'Test Store',
-              amount: '100.5',
+              amount: 10050, // 100.50 * 100 (cents)
+              memo: undefined,
             }),
           );
         },
@@ -205,7 +219,7 @@ describe('AddRecordForm', () => {
 
     it('should submit form with memo field', async () => {
       const user = userEvent.setup();
-      const consoleLogSpy = jest.spyOn(console, 'log');
+      mockAddTransaction.mockResolvedValue({ id: 'new-id' });
 
       render(<AddRecordForm />);
 
@@ -223,7 +237,7 @@ describe('AddRecordForm', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect(mockAddTransaction).toHaveBeenCalledWith(
           expect.objectContaining({
             memo: 'Test memo',
           }),
@@ -233,6 +247,8 @@ describe('AddRecordForm', () => {
 
     it('should reset form after successful submission', async () => {
       const user = userEvent.setup();
+      mockAddTransaction.mockResolvedValue({ id: 'new-id' });
+
       render(<AddRecordForm />);
 
       const dateInput = screen.getByLabelText('Date') as HTMLInputElement;
@@ -255,7 +271,7 @@ describe('AddRecordForm', () => {
 
     it('should accept negative amounts', async () => {
       const user = userEvent.setup();
-      const consoleLogSpy = jest.spyOn(console, 'log');
+      mockAddTransaction.mockResolvedValue({ id: 'new-id' });
 
       render(<AddRecordForm />);
 
@@ -271,9 +287,9 @@ describe('AddRecordForm', () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect(mockAddTransaction).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: '-50.25',
+            amount: -5025, // -50.25 * 100 (cents)
           }),
         );
       });
@@ -293,12 +309,10 @@ describe('AddRecordForm', () => {
 
       const submitButton = screen.getByRole('button', { name: /add/i });
 
-      // Check button is not disabled before submission
       expect(submitButton).not.toBeDisabled();
 
       await user.click(submitButton);
 
-      // After form reset, button should be enabled again
       await waitFor(() => {
         expect(submitButton).not.toBeDisabled();
       });
