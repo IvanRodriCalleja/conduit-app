@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
   selectTransactions,
   selectTransactionsError,
   selectTransactionsLoading,
   selectTransactionsIsReloading,
   getTransactionsThunk,
+  refreshTransactionsThunk,
 } from "store/transactionsSlice";
 import {
   addTransactionThunk,
@@ -14,7 +15,7 @@ import {
 import { useConduitDispatch } from "store/useConduitDispatch";
 import { AddTransactionPayload } from "services/addTransaction";
 
-export const useTransactions = () => {
+export const useTransactions = (refreshInterval: number = 0) => {
   const transactions = useSelector(selectTransactions);
   const dispatch = useConduitDispatch();
 
@@ -22,7 +23,25 @@ export const useTransactions = () => {
     dispatch(getTransactionsThunk());
   }, [dispatch]);
 
-  return { transactions, load };
+  const refresh = useCallback(() => {
+    dispatch(refreshTransactionsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  useEffect(() => {
+    if (refreshInterval > 0) {
+      const intervalId = setInterval(() => {
+        refresh();
+      }, refreshInterval);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [refresh, refreshInterval]);
+
+  return { transactions, load, refresh };
 };
 
 export const useTransactionsLoading = () => {

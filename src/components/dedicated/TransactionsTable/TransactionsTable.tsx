@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import cx from 'classnames';
 
 import RecordRow from 'components/dedicated/RecordRow/RecordRow';
@@ -16,12 +16,8 @@ export const columnStyles = {
 };
 
 const TransactionsTable: FC = () => {
-  const { transactions, load } = useTransactions();
+  const { transactions } = useTransactions(5000);
   const newlyAddedId = useNewlyAddedTransactionId();
-
-  useEffect(() => {
-    load();
-  }, [load]);
 
   return (
     <TransactionsTableSkeleton>
