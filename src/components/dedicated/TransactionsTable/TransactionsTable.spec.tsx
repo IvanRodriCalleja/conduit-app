@@ -7,6 +7,14 @@ import { TransactionRecord } from 'store/types';
 
 jest.mock('repositories/transactionsRepository');
 
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(() => null),
+}));
+
+jest.mock('store/useConduitDispatch', () => ({
+  useConduitDispatch: jest.fn(() => jest.fn()),
+}));
+
 describe('TransactionsTable', () => {
   const mockLoad = jest.fn();
   const mockRetry = jest.fn();

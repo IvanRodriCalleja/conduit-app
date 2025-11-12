@@ -3,9 +3,14 @@
   flex-wrap: wrap;
   background-color: $color-white;
   border-bottom: 0.1rem solid $color-gray-lighter;
+  transition: background-color 0.3s ease;
 
   &:nth-child(even) {
     background-color: $color-gray-lightest;
+  }
+
+  &--highlighted {
+    background-color: #f7ffe8 !important;
   }
 }
 

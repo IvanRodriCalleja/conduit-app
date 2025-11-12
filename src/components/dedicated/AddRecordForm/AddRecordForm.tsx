@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { columnStyles } from 'components/dedicated/TransactionsTable/TransactionsTable';
 import Button from 'components/core/Button/Button';
+import { useAddTransaction } from 'repositories/transactionsRepository';
 
 import styles from './AddRecordForm.module.scss';
 
@@ -37,7 +38,8 @@ const transactionSchema = z.object({
 type TransactionFormData = z.infer<typeof transactionSchema>;
 
 const AddRecordForm: FC = () => {
-  
+  const { addTransaction } = useAddTransaction();
+
   const {
     control,
     handleSubmit,
@@ -55,8 +57,16 @@ const AddRecordForm: FC = () => {
 
   const onSubmit = async (data: TransactionFormData) => {
     try {
-      console.log(data);
-      // TODO: update with server
+      const timestamp = new Date(data.date).getTime();
+      const amount = parseFloat(data.amount) * 100; // Convert to cents
+
+      await addTransaction({
+        amount,
+        payee: data.payee,
+        timestamp,
+        memo: data.memo || undefined,
+      });
+
       reset();
     } catch (error) {
       console.error('Failed to add transaction:', error);
