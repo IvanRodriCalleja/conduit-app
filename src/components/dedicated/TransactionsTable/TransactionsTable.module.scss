@@ -15,7 +15,11 @@
   }
 
   &payee {
-    flex: 0 0 60%;
+    flex: 0 0 35%;
+  }
+
+  &memo {
+    flex: 0 0 25%;
   }
 
   &date {

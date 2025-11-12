@@ -1,0 +1,46 @@
+.root {
+  // Container for the skeleton table
+}
+
+.tableHeader {
+  @include typoTableHeader;
+  display: flex;
+  border-bottom: 0.1rem solid $color-cyan;
+}
+
+.column {
+  padding: 1rem;
+}
+
+.skeletonRow {
+  display: flex;
+  border-bottom: 0.1rem solid $color-gray-lighter;
+  background-color: $color-white;
+
+  &:nth-child(even) {
+    background-color: $color-gray-lightest;
+  }
+}
+
+.skeletonText {
+  height: 1.8rem;
+  background: linear-gradient(
+    90deg,
+    rgba($color-cyan, 0.1) 25%,
+    rgba($color-cyan, 0.2) 50%,
+    rgba($color-cyan, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 0.4rem;
+  width: 80%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

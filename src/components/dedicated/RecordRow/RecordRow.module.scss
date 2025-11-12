@@ -16,3 +16,9 @@
     padding: 1rem;
   }
 }
+
+.currency {
+  &--negative {
+    color: $color-red;
+  }
+}

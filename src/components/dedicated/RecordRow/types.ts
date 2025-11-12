@@ -5,6 +5,7 @@ export interface RecordRowProps {
     amount: string;
     date: string;
     payee: string;
+    memo: string;
   };
   transactionRecord: TransactionRecord;
 }
