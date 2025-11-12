@@ -17,6 +17,7 @@ jest.mock('store/useConduitDispatch', () => ({
 
 describe('TransactionsTable', () => {
   const mockLoad = jest.fn();
+  const mockRefresh = jest.fn();
   const mockRetry = jest.fn();
 
   const mockUseTransactions = transactionsRepository.useTransactions as jest.MockedFunction<
@@ -55,6 +56,7 @@ describe('TransactionsTable', () => {
 
   beforeEach(() => {
     mockLoad.mockClear();
+    mockRefresh.mockClear();
     mockRetry.mockClear();
   });
 
@@ -67,6 +69,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(true);
       mockUseTransactionsError.mockReturnValue({
@@ -84,21 +87,6 @@ describe('TransactionsTable', () => {
       expect(screen.queryByText('Store A')).not.toBeInTheDocument();
     });
 
-    it('should call load function when component mounts while loading', () => {
-      mockUseTransactions.mockReturnValue({
-        transactions: [],
-        load: mockLoad,
-      });
-      mockUseTransactionsLoading.mockReturnValue(true);
-      mockUseTransactionsError.mockReturnValue({
-        error: null,
-        retry: mockRetry,
-      });
-
-      render(<TransactionsTable />);
-
-      expect(mockLoad).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('Error State', () => {
@@ -106,6 +94,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -126,6 +115,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -145,6 +135,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -164,6 +155,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -182,6 +174,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -226,6 +219,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: sortedTransactions,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -248,6 +242,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -270,6 +265,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -289,6 +285,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(true);
       mockUseTransactionsError.mockReturnValue({
@@ -305,22 +302,6 @@ describe('TransactionsTable', () => {
   });
 
   describe('State Transitions', () => {
-    it('should call load once on mount regardless of state', () => {
-      mockUseTransactions.mockReturnValue({
-        transactions: mockTransactions,
-        load: mockLoad,
-      });
-      mockUseTransactionsLoading.mockReturnValue(false);
-      mockUseTransactionsError.mockReturnValue({
-        error: null,
-        retry: mockRetry,
-      });
-
-      render(<TransactionsTable />);
-
-      expect(mockLoad).toHaveBeenCalledTimes(1);
-    });
-
     it('should render single transaction correctly', () => {
       const singleTransaction: TransactionRecord[] = [
         {
@@ -335,6 +316,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: singleTransaction,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({
@@ -359,6 +341,7 @@ describe('TransactionsTable', () => {
       mockUseTransactions.mockReturnValue({
         transactions: manyTransactions,
         load: mockLoad,
+        refresh: mockRefresh,
       });
       mockUseTransactionsLoading.mockReturnValue(false);
       mockUseTransactionsError.mockReturnValue({

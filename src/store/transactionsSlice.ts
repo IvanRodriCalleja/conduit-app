@@ -24,6 +24,13 @@ export const getTransactionsThunk = createAsyncThunk(
   },
 );
 
+export const refreshTransactionsThunk = createAsyncThunk(
+  'transactions/refresh',
+  async (_, { dispatch }) => {
+    await dispatch(getTransactionsThunk());
+  },
+);
+
 const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
