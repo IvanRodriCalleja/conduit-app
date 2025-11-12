@@ -22,7 +22,7 @@ export const addTransactionThunk = createAsyncThunk(
 
     dispatch(setNewlyAddedId(transaction.id));
 
-    dispatch(getTransactionsThunk());
+    await dispatch(getTransactionsThunk());
 
     setTimeout(() => {
       dispatch(clearNewlyAddedId());
