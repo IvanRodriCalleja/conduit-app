@@ -197,6 +197,11 @@ describe('transactionsSlice', () => {
         loading: false,
         error: null,
       },
+      addTransaction: {
+        loading: false,
+        error: null,
+        newlyAddedId: null,
+      },
     };
 
     it('selectTransactions should return transactions data', () => {

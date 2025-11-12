@@ -1,7 +1,17 @@
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
-import { selectTransactions, selectTransactionsError, selectTransactionsLoading, getTransactionsThunk } from "store/transactionsSlice";
+import {
+  selectTransactions,
+  selectTransactionsError,
+  selectTransactionsLoading,
+  getTransactionsThunk,
+} from "store/transactionsSlice";
+import {
+  addTransactionThunk,
+  selectNewlyAddedId,
+} from "store/addTransactionSlice";
 import { useConduitDispatch } from "store/useConduitDispatch";
+import { AddTransactionPayload } from "services/addTransaction";
 
 export const useTransactions = () => {
   const transactions = useSelector(selectTransactions);
@@ -28,4 +38,20 @@ export const useTransactionsError = () => {
   }, [dispatch]);
 
   return { error, retry };
+};
+
+export const useAddTransaction = () => {
+  const dispatch = useConduitDispatch();
+
+  const addTransaction = useCallback(async (payload: AddTransactionPayload) => {
+    const result = await dispatch(addTransactionThunk(payload));
+    return result.payload;
+  }, [dispatch]);
+
+  return { addTransaction };
+};
+
+export const useNewlyAddedTransactionId = () => {
+  const newlyAddedId = useSelector(selectNewlyAddedId);
+  return newlyAddedId;
 };
