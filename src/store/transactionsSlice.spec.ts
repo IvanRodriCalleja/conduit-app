@@ -2,6 +2,7 @@ import transactionsReducer, {
   getTransactionsThunk,
   selectTransactions,
   selectTransactionsLoading,
+  selectTransactionsIsReloading,
   selectTransactionsError,
   TransactionsState,
 } from './transactionsSlice';
@@ -33,6 +34,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: false,
+        isReloading: false,
         error: null,
       };
 
@@ -45,6 +47,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: false,
+        isReloading: false,
         error: 'Previous error',
       };
 
@@ -59,6 +62,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: true,
+        isReloading: false,
         error: null,
       };
 
@@ -77,6 +81,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: true,
+        isReloading: false,
         error: null,
       };
 
@@ -123,6 +128,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: true,
+        isReloading: false,
         error: null,
       };
 
@@ -142,6 +148,7 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: [],
         loading: true,
+        isReloading: false,
         error: null,
       };
 
@@ -153,6 +160,74 @@ describe('transactionsSlice', () => {
 
       expect(state.loading).toBe(false);
       expect(state.error).toBe('Failed to fetch transactions');
+    });
+
+    it('should set isReloading when pending and data exists', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        error: null,
+      };
+
+      const action = { type: getTransactionsThunk.pending.type };
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.isReloading).toBe(true);
+      expect(state.loading).toBe(false);
+      expect(state.error).toBe(null);
+    });
+
+    it('should set loading when pending and no data exists', () => {
+      const initialState: TransactionsState = {
+        data: [],
+        loading: false,
+        isReloading: false,
+        error: null,
+      };
+
+      const action = { type: getTransactionsThunk.pending.type };
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.loading).toBe(true);
+      expect(state.isReloading).toBe(false);
+      expect(state.error).toBe(null);
+    });
+
+    it('should clear isReloading on fulfilled', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: true,
+        error: null,
+      };
+
+      const action = {
+        type: getTransactionsThunk.fulfilled.type,
+        payload: mockTransactions,
+      };
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.isReloading).toBe(false);
+      expect(state.loading).toBe(false);
+    });
+
+    it('should clear isReloading on rejected', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: true,
+        error: null,
+      };
+
+      const action = {
+        type: getTransactionsThunk.rejected.type,
+        error: { message: 'Error' },
+      };
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.isReloading).toBe(false);
+      expect(state.loading).toBe(false);
     });
   });
 
@@ -195,6 +270,7 @@ describe('transactionsSlice', () => {
       transactions: {
         data: mockTransactions,
         loading: false,
+        isReloading: false,
         error: null,
       },
       addTransaction: {
@@ -216,6 +292,16 @@ describe('transactionsSlice', () => {
         transactions: { ...mockState.transactions, loading: true },
       };
       expect(selectTransactionsLoading(loadingState)).toBe(true);
+    });
+
+    it('selectTransactionsIsReloading should return isReloading state', () => {
+      expect(selectTransactionsIsReloading(mockState)).toBe(false);
+
+      const reloadingState: RootState = {
+        ...mockState,
+        transactions: { ...mockState.transactions, isReloading: true },
+      };
+      expect(selectTransactionsIsReloading(reloadingState)).toBe(true);
     });
 
     it('selectTransactionsError should return error state', () => {

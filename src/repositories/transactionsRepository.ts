@@ -4,6 +4,7 @@ import {
   selectTransactions,
   selectTransactionsError,
   selectTransactionsLoading,
+  selectTransactionsIsReloading,
   getTransactionsThunk,
 } from "store/transactionsSlice";
 import {
@@ -27,6 +28,11 @@ export const useTransactions = () => {
 export const useTransactionsLoading = () => {
   const loading = useSelector(selectTransactionsLoading);
   return loading;
+};
+
+export const useTransactionsIsReloading = () => {
+  const isReloading = useSelector(selectTransactionsIsReloading);
+  return isReloading;
 };
 
 export const useTransactionsError = () => {

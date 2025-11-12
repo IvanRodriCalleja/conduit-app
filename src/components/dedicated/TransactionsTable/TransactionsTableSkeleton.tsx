@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import { columnStyles } from './TransactionsTable';
 import styles from './TransactionsTableSkeleton.module.scss';
-import { useTransactionsLoading } from 'repositories/transactionsRepository';
+import { useTransactionsLoading, useTransactionsIsReloading } from 'repositories/transactionsRepository';
 
 interface TransactionsTableSkeletonProps {
   children: ReactNode;
@@ -11,8 +11,23 @@ interface TransactionsTableSkeletonProps {
 
 export const TransactionsTableSkeleton = ({ children }: TransactionsTableSkeletonProps): JSX.Element => {
   const loading = useTransactionsLoading();
+  const isReloading = useTransactionsIsReloading();
 
-  if (!loading) return <>{children}</>;
+  if (!loading && !isReloading) return <>{children}</>;
+
+  if (isReloading) {
+    return (
+      <div className={styles.overlayContainer}>
+        {children}
+        <div className={styles.reloadingOverlay}>
+          <div className={styles.reloadingIndicator}>
+            <div className={styles.spinner} />
+            <span className={styles.reloadingText}>Updating...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const skeletonRows = Array.from({ length: 25 }, (_, i) => i);
 
