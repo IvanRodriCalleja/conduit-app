@@ -1,0 +1,38 @@
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1.5rem;
+  background-color: rgba(#ff6b6b, 0.1);
+  border: 0.1rem solid rgba(#ff6b6b, 0.3);
+  border-radius: 0.4rem;
+  max-width: 60rem;
+  margin: 4rem auto;
+}
+
+.errorIcon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: #ff6b6b;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  p {
+    margin: 0 0 1.5rem 0;
+    color: $color-white;
+    opacity: 0.8;
+    text-align: center;
+  }
+}
