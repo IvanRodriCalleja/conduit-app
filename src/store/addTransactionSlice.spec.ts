@@ -3,8 +3,12 @@ import addTransactionReducer, {
   setNewlyAddedId,
   clearNewlyAddedId,
   selectNewlyAddedId,
+  addTransactionThunk,
 } from './addTransactionSlice';
 import { RootState } from './types';
+import * as addTransactionService from '../services/addTransaction';
+
+jest.mock('../services/addTransaction');
 
 describe('addTransactionSlice', () => {
   describe('reducer', () => {
@@ -58,6 +62,109 @@ describe('addTransactionSlice', () => {
 
       state = addTransactionReducer(state, setNewlyAddedId('transaction-2'));
       expect(state.newlyAddedId).toBe('transaction-2');
+    });
+  });
+
+  describe('addTransactionThunk', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
+    });
+
+    it('should clear highlight 1 second after refetch completes', async () => {
+      const mockTransaction = {
+        id: 'new-transaction-id',
+        amount: 5000,
+        payee: 'Test Payee',
+        memo: 'Test memo',
+        timestamp: Date.now(),
+      };
+
+      jest
+        .spyOn(addTransactionService, 'addTransaction')
+        .mockResolvedValue(mockTransaction);
+
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+
+      dispatch.mockResolvedValue({ type: 'fulfilled' });
+
+      const payload = {
+        amount: 5000,
+        payee: 'Test Payee',
+        memo: 'Test memo',
+        timestamp: Date.now(),
+      };
+
+      const thunk = addTransactionThunk(payload);
+      await thunk(dispatch, getState, undefined);
+
+      expect(dispatch).toHaveBeenCalledWith(
+        setNewlyAddedId('new-transaction-id'),
+      );
+      expect(dispatch).toHaveBeenCalledWith(expect.any(Function));
+      expect(dispatch).not.toHaveBeenCalledWith(clearNewlyAddedId());
+
+      jest.advanceTimersByTime(1000);
+
+      expect(dispatch).toHaveBeenCalledWith(clearNewlyAddedId());
+    });
+
+    it('should wait for refetch to complete before starting timer', async () => {
+      const mockTransaction = {
+        id: 'new-transaction-id',
+        amount: 5000,
+        payee: 'Test Payee',
+        memo: 'Test memo',
+        timestamp: Date.now(),
+      };
+
+      jest
+        .spyOn(addTransactionService, 'addTransaction')
+        .mockResolvedValue(mockTransaction);
+
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+
+      let refetchResolver: () => void;
+      const refetchPromise = new Promise<void>((resolve) => {
+        refetchResolver = resolve;
+      });
+
+      // Mock dispatch to control when getTransactionsThunk completes
+      dispatch.mockImplementation((action: any) => {
+        if (typeof action === 'function') {
+          return refetchPromise;
+        }
+        return action;
+      });
+
+      const payload = {
+        amount: 5000,
+        payee: 'Test Payee',
+        memo: 'Test memo',
+        timestamp: Date.now(),
+      };
+
+      const thunk = addTransactionThunk(payload);
+      const thunkPromise = thunk(dispatch, getState, undefined);
+
+      jest.advanceTimersByTime(500);
+
+      expect(dispatch).not.toHaveBeenCalledWith(clearNewlyAddedId());
+
+      refetchResolver!();
+      await thunkPromise;
+
+      expect(dispatch).not.toHaveBeenCalledWith(clearNewlyAddedId());
+
+      jest.advanceTimersByTime(1000);
+
+      expect(dispatch).toHaveBeenCalledWith(clearNewlyAddedId());
     });
   });
 
