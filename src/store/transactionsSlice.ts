@@ -34,7 +34,7 @@ const transactionsSlice = createSlice({
       })
       .addCase(getTransactionsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action.payload.sort((a, b) => b.timestamp - a.timestamp);
       })
       .addCase(getTransactionsThunk.rejected, (state, action) => {
         state.loading = false;

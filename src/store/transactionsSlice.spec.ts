@@ -69,8 +69,54 @@ describe('transactionsSlice', () => {
       const state = transactionsReducer(initialState, action);
 
       expect(state.loading).toBe(false);
-      expect(state.data).toEqual(mockTransactions);
+      expect(state.data.length).toBe(mockTransactions.length);
       expect(state.error).toBe(null);
+    });
+
+    it('should sort transactions by timestamp in descending order on fulfilled', () => {
+      const initialState: TransactionsState = {
+        data: [],
+        loading: true,
+        error: null,
+      };
+
+      const unsortedTransactions = [
+        {
+          id: '1',
+          amount: 10000,
+          payee: 'Old Store',
+          memo: 'Old',
+          timestamp: 1000,
+        },
+        {
+          id: '2',
+          amount: -5000,
+          payee: 'Newest Store',
+          memo: 'Newest',
+          timestamp: 3000,
+        },
+        {
+          id: '3',
+          amount: 7500,
+          payee: 'Middle Store',
+          memo: 'Middle',
+          timestamp: 2000,
+        },
+      ];
+
+      const action = {
+        type: getTransactionsThunk.fulfilled.type,
+        payload: unsortedTransactions,
+      };
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.loading).toBe(false);
+      expect(state.data[0].timestamp).toBe(3000); // Newest
+      expect(state.data[1].timestamp).toBe(2000); // Middle
+      expect(state.data[2].timestamp).toBe(1000); // Oldest
+      expect(state.data[0].payee).toBe('Newest Store');
+      expect(state.data[1].payee).toBe('Middle Store');
+      expect(state.data[2].payee).toBe('Old Store');
     });
 
     it('should handle getTransactionsThunk.rejected', () => {
