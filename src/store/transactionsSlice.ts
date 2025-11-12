@@ -5,12 +5,14 @@ import { getTransactions } from '../services/getTransactions';
 export interface TransactionsState {
   data: TransactionRecord[];
   loading: boolean;
+  isReloading: boolean;
   error: string | null;
 }
 
 const initialState: TransactionsState = {
   data: [],
   loading: false,
+  isReloading: false,
   error: null,
 };
 
@@ -29,15 +31,21 @@ const transactionsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTransactionsThunk.pending, (state) => {
-        state.loading = true;
+        if (state.data.length > 0) {
+          state.isReloading = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getTransactionsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.sort((a, b) => b.timestamp - a.timestamp);
+        state.isReloading = false;
+        state.data = [...action.payload].sort((a, b) => b.timestamp - a.timestamp);
       })
       .addCase(getTransactionsThunk.rejected, (state, action) => {
         state.loading = false;
+        state.isReloading = false;
         state.error = action.error.message || 'Failed to fetch transactions';
       });
   },
@@ -47,6 +55,8 @@ const transactionsSlice = createSlice({
 export const selectTransactions = (state: RootState) => state.transactions.data;
 export const selectTransactionsLoading = (state: RootState) =>
   state.transactions.loading;
+export const selectTransactionsIsReloading = (state: RootState) =>
+  state.transactions.isReloading;
 export const selectTransactionsError = (state: RootState) =>
   state.transactions.error;
 

@@ -66,6 +66,7 @@ describe('addTransactionSlice', () => {
       transactions: {
         data: [],
         loading: false,
+        isReloading: false,
         error: null,
       },
       addTransaction: {
@@ -81,7 +82,12 @@ describe('addTransactionSlice', () => {
 
     it('selectNewlyAddedId should return null when no ID is set', () => {
       const stateWithNoId: RootState = {
-        ...mockState,
+        transactions: {
+          data: [],
+          loading: false,
+          isReloading: false,
+          error: null,
+        },
         addTransaction: {
           loading: false,
           error: null,
