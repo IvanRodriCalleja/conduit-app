@@ -95,7 +95,11 @@ const AddRecordForm: FC = () => {
                     aria-errormessage={errors.date ? 'date-error' : undefined}
                   />
                   {errors.date && (
-                    <span id="date-error" className={styles.errorMessage} role="alert">
+                    <span
+                      id="date-error"
+                      className={styles.errorMessage}
+                      role="alert"
+                    >
                       {errors.date.message}
                     </span>
                   )}
@@ -119,7 +123,11 @@ const AddRecordForm: FC = () => {
                     aria-errormessage={errors.payee ? 'payee-error' : undefined}
                   />
                   {errors.payee && (
-                    <span id="payee-error" className={styles.errorMessage} role="alert">
+                    <span
+                      id="payee-error"
+                      className={styles.errorMessage}
+                      role="alert"
+                    >
                       {errors.payee.message}
                     </span>
                   )}
@@ -143,7 +151,11 @@ const AddRecordForm: FC = () => {
                     aria-errormessage={errors.memo ? 'memo-error' : undefined}
                   />
                   {errors.memo && (
-                    <span id="memo-error" className={styles.errorMessage} role="alert">
+                    <span
+                      id="memo-error"
+                      className={styles.errorMessage}
+                      role="alert"
+                    >
                       {errors.memo.message}
                     </span>
                   )}
@@ -172,10 +184,16 @@ const AddRecordForm: FC = () => {
                     step="0.01"
                     className={cx({ [styles.hasError]: !!errors.amount })}
                     aria-invalid={!!errors.amount}
-                    aria-errormessage={errors.amount ? 'amount-error' : undefined}
+                    aria-errormessage={
+                      errors.amount ? 'amount-error' : undefined
+                    }
                   />
                   {errors.amount && (
-                    <span id="amount-error" className={styles.errorMessage} role="alert">
+                    <span
+                      id="amount-error"
+                      className={styles.errorMessage}
+                      role="alert"
+                    >
                       {errors.amount.message}
                     </span>
                   )}
@@ -183,17 +201,18 @@ const AddRecordForm: FC = () => {
               )}
             />
           </div>
+          
         </div>
-        <div>
-        <Button
-          className={styles.buttonAdd}
-          label="Add"
-          padding="normal"
-          width="auto"
-          type="submit"
-          isDisabled={isSubmitting}
-        />
-        </div>
+        <div className={styles.buttonWrapper}>
+            <Button
+              className={styles.buttonAdd}
+              label="Add"
+              padding="small"
+              width="auto"
+              type="submit"
+              isDisabled={isSubmitting}
+            />
+          </div>
       </form>
     </div>
   );
