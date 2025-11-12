@@ -4,6 +4,14 @@ import transactionsReducer, {
   selectTransactionsLoading,
   selectTransactionsIsReloading,
   selectTransactionsError,
+  selectPaginatedTransactions,
+  selectCurrentPage,
+  selectTotalPages,
+  selectPageSize,
+  setPage,
+  nextPage,
+  previousPage,
+  goToPageWithTransaction,
   TransactionsState,
 } from './transactionsSlice';
 import { RootState } from './types';
@@ -35,6 +43,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -48,6 +58,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: 'Previous error',
       };
 
@@ -63,6 +75,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: true,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -82,6 +96,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: true,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -129,6 +145,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: true,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -149,6 +167,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: true,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -167,6 +187,8 @@ describe('transactionsSlice', () => {
         data: mockTransactions,
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -183,6 +205,8 @@ describe('transactionsSlice', () => {
         data: [],
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       };
 
@@ -198,6 +222,8 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: mockTransactions,
         loading: false,
+        currentPage: 1,
+        pageSize: 10,
         isReloading: true,
         error: null,
       };
@@ -216,6 +242,8 @@ describe('transactionsSlice', () => {
       const initialState: TransactionsState = {
         data: mockTransactions,
         loading: false,
+        currentPage: 1,
+        pageSize: 10,
         isReloading: true,
         error: null,
       };
@@ -271,6 +299,8 @@ describe('transactionsSlice', () => {
         data: mockTransactions,
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       },
       addTransaction: {
@@ -312,6 +342,264 @@ describe('transactionsSlice', () => {
         transactions: { ...mockState.transactions, error: 'Test error' },
       };
       expect(selectTransactionsError(errorState)).toBe('Test error');
+    });
+  });
+
+  describe('pagination actions', () => {
+    it('should handle setPage', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = setPage(3);
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(3);
+    });
+
+    it('should handle nextPage when not at the last page', () => {
+      const manyTransactions = Array.from({ length: 25 }, (_, i) => ({
+        id: `${i}`,
+        amount: i * 100,
+        payee: `Store ${i}`,
+        memo: '',
+        timestamp: 1000 + i,
+      }));
+
+      const initialState: TransactionsState = {
+        data: manyTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = nextPage();
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(2);
+    });
+
+    it('should not increment page when at the last page', () => {
+      const manyTransactions = Array.from({ length: 25 }, (_, i) => ({
+        id: `${i}`,
+        amount: i * 100,
+        payee: `Store ${i}`,
+        memo: '',
+        timestamp: 1000 + i,
+      }));
+
+      const initialState: TransactionsState = {
+        data: manyTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 3, // Last page (25 items / 10 per page = 3 pages)
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = nextPage();
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(3);
+    });
+
+    it('should handle previousPage when not at the first page', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 3,
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = previousPage();
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(2);
+    });
+
+    it('should not decrement page when at the first page', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = previousPage();
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(1);
+    });
+
+    it('should handle goToPageWithTransaction when transaction exists', () => {
+      const manyTransactions = Array.from({ length: 25 }, (_, i) => ({
+        id: `trans-${i}`,
+        amount: i * 100,
+        payee: `Store ${i}`,
+        memo: '',
+        timestamp: 1000 + i,
+      }));
+
+      const initialState: TransactionsState = {
+        data: manyTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      };
+
+      // Transaction at index 15 should be on page 2 (index 10-19 = page 2)
+      const action = goToPageWithTransaction('trans-15');
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(2);
+    });
+
+    it('should not change page when transaction does not exist', () => {
+      const initialState: TransactionsState = {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      };
+
+      const action = goToPageWithTransaction('nonexistent-id');
+      const state = transactionsReducer(initialState, action);
+
+      expect(state.currentPage).toBe(1);
+    });
+  });
+
+  describe('pagination selectors', () => {
+    const baseMockState: RootState = {
+      transactions: {
+        data: mockTransactions,
+        loading: false,
+        isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
+        error: null,
+      },
+      addTransaction: {
+        loading: false,
+        error: null,
+        newlyAddedId: null,
+      },
+    };
+
+    it('selectCurrentPage should return current page', () => {
+      expect(selectCurrentPage(baseMockState)).toBe(1);
+
+      const page2State: RootState = {
+        ...baseMockState,
+        transactions: { ...baseMockState.transactions, currentPage: 2 },
+      };
+      expect(selectCurrentPage(page2State)).toBe(2);
+    });
+
+    it('selectPageSize should return page size', () => {
+      expect(selectPageSize(baseMockState)).toBe(10);
+    });
+
+    it('selectTotalPages should calculate total pages correctly', () => {
+      expect(selectTotalPages(baseMockState)).toBe(1); // 2 transactions / 10 per page = 1 page
+
+      const manyTransactions = Array.from({ length: 25 }, (_, i) => ({
+        id: `${i}`,
+        amount: i * 100,
+        payee: `Store ${i}`,
+        memo: '',
+        timestamp: 1000 + i,
+      }));
+
+      const manyState: RootState = {
+        ...baseMockState,
+        transactions: {
+          ...baseMockState.transactions,
+          data: manyTransactions,
+        },
+      };
+
+      expect(selectTotalPages(manyState)).toBe(3); // 25 transactions / 10 per page = 3 pages
+    });
+
+    it('selectPaginatedTransactions should return correct slice for current page', () => {
+      const manyTransactions = Array.from({ length: 25 }, (_, i) => ({
+        id: `trans-${i}`,
+        amount: i * 100,
+        payee: `Store ${i}`,
+        memo: '',
+        timestamp: 1000 + i,
+      }));
+
+      const page1State: RootState = {
+        ...baseMockState,
+        transactions: {
+          ...baseMockState.transactions,
+          data: manyTransactions,
+          currentPage: 1,
+        },
+      };
+
+      const page1Results = selectPaginatedTransactions(page1State);
+      expect(page1Results.length).toBe(10);
+      expect(page1Results[0].id).toBe('trans-0');
+      expect(page1Results[9].id).toBe('trans-9');
+
+      const page2State: RootState = {
+        ...baseMockState,
+        transactions: {
+          ...baseMockState.transactions,
+          data: manyTransactions,
+          currentPage: 2,
+        },
+      };
+
+      const page2Results = selectPaginatedTransactions(page2State);
+      expect(page2Results.length).toBe(10);
+      expect(page2Results[0].id).toBe('trans-10');
+      expect(page2Results[9].id).toBe('trans-19');
+
+      const page3State: RootState = {
+        ...baseMockState,
+        transactions: {
+          ...baseMockState.transactions,
+          data: manyTransactions,
+          currentPage: 3,
+        },
+      };
+
+      const page3Results = selectPaginatedTransactions(page3State);
+      expect(page3Results.length).toBe(5); // Last page has only 5 items
+      expect(page3Results[0].id).toBe('trans-20');
+      expect(page3Results[4].id).toBe('trans-24');
+    });
+
+    it('selectPaginatedTransactions should return empty array when no data', () => {
+      const emptyState: RootState = {
+        ...baseMockState,
+        transactions: {
+          ...baseMockState.transactions,
+          data: [],
+        },
+      };
+
+      const results = selectPaginatedTransactions(emptyState);
+      expect(results).toEqual([]);
     });
   });
 });

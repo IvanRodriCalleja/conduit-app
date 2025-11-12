@@ -5,8 +5,14 @@ import {
   selectTransactionsError,
   selectTransactionsLoading,
   selectTransactionsIsReloading,
+  selectPaginatedTransactions,
+  selectCurrentPage,
+  selectTotalPages,
   getTransactionsThunk,
   refreshTransactionsThunk,
+  nextPage,
+  previousPage,
+  goToPageWithTransaction,
 } from "store/transactionsSlice";
 import {
   addTransactionThunk,
@@ -16,7 +22,10 @@ import { useConduitDispatch } from "store/useConduitDispatch";
 import { AddTransactionPayload } from "services/addTransaction";
 
 export const useTransactions = (refreshInterval: number = 0) => {
-  const transactions = useSelector(selectTransactions);
+  const allTransactions = useSelector(selectTransactions);
+  const currentPage = useSelector(selectCurrentPage);
+  const totalPages = useSelector(selectTotalPages);
+  const paginatedTransactions = useSelector(selectPaginatedTransactions);
   const dispatch = useConduitDispatch();
 
   const load = useCallback(() => {
@@ -25,6 +34,18 @@ export const useTransactions = (refreshInterval: number = 0) => {
 
   const refresh = useCallback(() => {
     dispatch(refreshTransactionsThunk());
+  }, [dispatch]);
+
+  const handleNextPage = useCallback(() => {
+    dispatch(nextPage());
+  }, [dispatch]);
+
+  const handlePreviousPage = useCallback(() => {
+    dispatch(previousPage());
+  }, [dispatch]);
+
+  const goToTransactionPage = useCallback((transactionId: string) => {
+    dispatch(goToPageWithTransaction(transactionId));
   }, [dispatch]);
 
   useEffect(() => {
@@ -41,7 +62,17 @@ export const useTransactions = (refreshInterval: number = 0) => {
     }
   }, [refresh, refreshInterval]);
 
-  return { transactions, load, refresh };
+  return {
+    transactions: paginatedTransactions,
+    allTransactions,
+    currentPage,
+    totalPages,
+    onNextPage: handleNextPage,
+    onPreviousPage: handlePreviousPage,
+    goToTransactionPage,
+    load,
+    refresh,
+  };
 };
 
 export const useTransactionsLoading = () => {
@@ -80,3 +111,4 @@ export const useNewlyAddedTransactionId = () => {
   const newlyAddedId = useSelector(selectNewlyAddedId);
   return newlyAddedId;
 };
+

@@ -19,6 +19,9 @@ describe('TransactionsTable', () => {
   const mockLoad = jest.fn();
   const mockRefresh = jest.fn();
   const mockRetry = jest.fn();
+  const mockOnNextPage = jest.fn();
+  const mockOnPreviousPage = jest.fn();
+  const mockGoToTransactionPage = jest.fn();
 
   const mockUseTransactions = transactionsRepository.useTransactions as jest.MockedFunction<
     typeof transactionsRepository.useTransactions
@@ -28,6 +31,9 @@ describe('TransactionsTable', () => {
   >;
   const mockUseTransactionsError = transactionsRepository.useTransactionsError as jest.MockedFunction<
     typeof transactionsRepository.useTransactionsError
+  >;
+  const mockUseNewlyAddedTransactionId = transactionsRepository.useNewlyAddedTransactionId as jest.MockedFunction<
+    typeof transactionsRepository.useNewlyAddedTransactionId
   >;
 
   const mockTransactions: TransactionRecord[] = [
@@ -58,6 +64,12 @@ describe('TransactionsTable', () => {
     mockLoad.mockClear();
     mockRefresh.mockClear();
     mockRetry.mockClear();
+    mockOnNextPage.mockClear();
+    mockOnPreviousPage.mockClear();
+    mockGoToTransactionPage.mockClear();
+
+    // Default mock for useNewlyAddedTransactionId
+    mockUseNewlyAddedTransactionId.mockReturnValue(null);
   });
 
   afterEach(() => {
@@ -68,6 +80,12 @@ describe('TransactionsTable', () => {
     it('should show skeleton when loading is true and no error', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -93,6 +111,12 @@ describe('TransactionsTable', () => {
     it('should show error message when there is an error and not loading', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -114,6 +138,12 @@ describe('TransactionsTable', () => {
 
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -134,6 +164,12 @@ describe('TransactionsTable', () => {
     it('should not show transaction data when there is an error', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
+        allTransactions: mockTransactions,
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -154,6 +190,12 @@ describe('TransactionsTable', () => {
     it('should show transactions when not loading and no error', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
+        allTransactions: mockTransactions,
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -173,6 +215,12 @@ describe('TransactionsTable', () => {
     it('should show table headers when displaying data', () => {
       mockUseTransactions.mockReturnValue({
         transactions: mockTransactions,
+        allTransactions: mockTransactions,
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -218,6 +266,12 @@ describe('TransactionsTable', () => {
 
       mockUseTransactions.mockReturnValue({
         transactions: sortedTransactions,
+        allTransactions: sortedTransactions,
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -241,6 +295,12 @@ describe('TransactionsTable', () => {
     it('should show empty table with headers when no transactions and no error', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -264,6 +324,12 @@ describe('TransactionsTable', () => {
     it('should not show error or loading state when empty', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -284,6 +350,12 @@ describe('TransactionsTable', () => {
     it('should prioritize loading state over error state', () => {
       mockUseTransactions.mockReturnValue({
         transactions: [],
+        allTransactions: [],
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -315,6 +387,12 @@ describe('TransactionsTable', () => {
 
       mockUseTransactions.mockReturnValue({
         transactions: singleTransaction,
+        allTransactions: singleTransaction,
+        currentPage: 1,
+        totalPages: 1,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -339,7 +417,13 @@ describe('TransactionsTable', () => {
       }));
 
       mockUseTransactions.mockReturnValue({
-        transactions: manyTransactions,
+        transactions: manyTransactions.slice(0, 10),
+        allTransactions: manyTransactions,
+        currentPage: 1,
+        totalPages: 10,
+        onNextPage: mockOnNextPage,
+        onPreviousPage: mockOnPreviousPage,
+        goToTransactionPage: mockGoToTransactionPage,
         load: mockLoad,
         refresh: mockRefresh,
       });
@@ -353,8 +437,8 @@ describe('TransactionsTable', () => {
 
       // Check that some transactions from the set are rendered
       expect(screen.getByText('Store 0')).toBeInTheDocument();
-      expect(screen.getByText('Store 50')).toBeInTheDocument();
-      expect(screen.getByText('Store 99')).toBeInTheDocument();
+      expect(screen.getByText('Store 5')).toBeInTheDocument();
+      expect(screen.getByText('Store 9')).toBeInTheDocument();
     });
   });
 });

@@ -6,6 +6,7 @@ import { useTransactions, useNewlyAddedTransactionId } from 'repositories/transa
 
 import { TransactionsTableSkeleton } from './TransactionsTableSkeleton';
 import { TransactionsTableError } from './TransactionsTableError';
+import { Pagination } from './Pagination';
 import styles from './TransactionsTable.module.scss';
 
 export const columnStyles = {
@@ -16,7 +17,13 @@ export const columnStyles = {
 };
 
 const TransactionsTable: FC = () => {
-  const { transactions } = useTransactions(5000);
+  const {
+    transactions,
+    currentPage,
+    totalPages,
+    onNextPage,
+    onPreviousPage,
+  } = useTransactions(5000);
   const newlyAddedId = useNewlyAddedTransactionId();
 
   return (
@@ -38,6 +45,12 @@ const TransactionsTable: FC = () => {
             />
           ))}
         </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={onNextPage}
+          onPreviousPage={onPreviousPage}
+        />
       </TransactionsTableError>
     </TransactionsTableSkeleton>
   );

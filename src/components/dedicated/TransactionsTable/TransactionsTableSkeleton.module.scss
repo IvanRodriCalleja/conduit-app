@@ -94,3 +94,40 @@
     transform: rotate(360deg);
   }
 }
+
+.paginationSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.skeletonButton {
+  width: 6rem;
+  height: 2.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba($color-cyan, 0.1) 25%,
+    rgba($color-cyan, 0.2) 50%,
+    rgba($color-cyan, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 0.25rem;
+}
+
+.skeletonPageInfo {
+  width: 8rem;
+  height: 1.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba($color-cyan, 0.1) 25%,
+    rgba($color-cyan, 0.2) 50%,
+    rgba($color-cyan, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 0.4rem;
+}

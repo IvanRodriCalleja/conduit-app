@@ -174,6 +174,8 @@ describe('addTransactionSlice', () => {
         data: [],
         loading: false,
         isReloading: false,
+        currentPage: 1,
+        pageSize: 10,
         error: null,
       },
       addTransaction: {
@@ -193,6 +195,8 @@ describe('addTransactionSlice', () => {
           data: [],
           loading: false,
           isReloading: false,
+          currentPage: 1,
+          pageSize: 10,
           error: null,
         },
         addTransaction: {

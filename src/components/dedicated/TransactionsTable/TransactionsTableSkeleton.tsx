@@ -29,32 +29,39 @@ export const TransactionsTableSkeleton = ({ children }: TransactionsTableSkeleto
     );
   }
 
-  const skeletonRows = Array.from({ length: 25 }, (_, i) => i);
+  const skeletonRows = Array.from({ length: 10 }, (_, i) => i);
 
   return (
-    <div className={styles.root}>
-      <div className={styles.tableHeader}>
-        <div className={cx(styles.column, columnStyles.date)}>Date</div>
-        <div className={cx(styles.column, columnStyles.payee)}>Payee</div>
-        <div className={cx(styles.column, columnStyles.memo)}>Memo</div>
-        <div className={cx(styles.column, columnStyles.amount)}>Amount</div>
-      </div>
-      {skeletonRows.map((index) => (
-        <div key={index} className={styles.skeletonRow}>
-          <div className={cx(styles.column, columnStyles.date)}>
-            <div className={styles.skeletonText} />
-          </div>
-          <div className={cx(styles.column, columnStyles.payee)}>
-            <div className={styles.skeletonText} />
-          </div>
-          <div className={cx(styles.column, columnStyles.memo)}>
-            <div className={styles.skeletonText} />
-          </div>
-          <div className={cx(styles.column, columnStyles.amount)}>
-            <div className={styles.skeletonText} />
-          </div>
+    <>
+      <div className={styles.root}>
+        <div className={styles.tableHeader}>
+          <div className={cx(styles.column, columnStyles.date)}>Date</div>
+          <div className={cx(styles.column, columnStyles.payee)}>Payee</div>
+          <div className={cx(styles.column, columnStyles.memo)}>Memo</div>
+          <div className={cx(styles.column, columnStyles.amount)}>Amount</div>
         </div>
-      ))}
-    </div>
+        {skeletonRows.map((index) => (
+          <div key={index} className={styles.skeletonRow}>
+            <div className={cx(styles.column, columnStyles.date)}>
+              <div className={styles.skeletonText} />
+            </div>
+            <div className={cx(styles.column, columnStyles.payee)}>
+              <div className={styles.skeletonText} />
+            </div>
+            <div className={cx(styles.column, columnStyles.memo)}>
+              <div className={styles.skeletonText} />
+            </div>
+            <div className={cx(styles.column, columnStyles.amount)}>
+              <div className={styles.skeletonText} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className={styles.paginationSkeleton}>
+        <div className={styles.skeletonButton} />
+        <div className={styles.skeletonPageInfo} />
+        <div className={styles.skeletonButton} />
+      </div>
+    </>
   );
 };

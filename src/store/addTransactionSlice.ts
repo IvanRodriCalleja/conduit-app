@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './types';
 import { addTransaction, AddTransactionPayload } from '../services/addTransaction';
-import { getTransactionsThunk } from './transactionsSlice';
+import { getTransactionsThunk, goToPageWithTransaction } from './transactionsSlice';
 
 export interface AddTransactionState {
   loading: boolean;
@@ -23,6 +23,8 @@ export const addTransactionThunk = createAsyncThunk(
     dispatch(setNewlyAddedId(transaction.id));
 
     await dispatch(getTransactionsThunk());
+
+    dispatch(goToPageWithTransaction(transaction.id));
 
     setTimeout(() => {
       dispatch(clearNewlyAddedId());
