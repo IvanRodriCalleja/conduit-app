@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src", "declaration.d.ts", "vite.config.ts"],
+  "include": ["src", "declaration.d.ts", "vite.config.ts", "e2e"],
   "exclude": [
     "dist"
   ],
