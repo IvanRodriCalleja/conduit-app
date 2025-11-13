@@ -57,10 +57,17 @@
   }
 }
 
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 7rem;
+  padding-top: 2.1rem; // Match label height + margin (1.3rem font-size + line-height + 0.3rem margin)
+}
+
 .buttonAdd {
   flex: 0 0 6rem;
   margin: 0 0.5rem;
-  margin-bottom: 2.6rem;
 }
 
 .column {
@@ -86,11 +93,13 @@
 
   input {
     width: 100%;
+    height: 3.8rem;
     @include typoContent;
     padding: 0.5rem;
     border-radius: $defaultRadius;
     border: 0.1rem solid $color-cyan;
     color: $color-black;
+    box-sizing: border-box;
 
     &:focus {
       outline: $color-cyan-darker;

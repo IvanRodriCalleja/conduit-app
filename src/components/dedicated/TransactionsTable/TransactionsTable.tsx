@@ -4,9 +4,9 @@ import cx from 'classnames';
 import RecordRow from 'components/dedicated/RecordRow/RecordRow';
 import { useTransactions, useNewlyAddedTransactionId } from 'repositories/transactionsRepository';
 
-import { TransactionsTableSkeleton } from './TransactionsTableSkeleton';
-import { TransactionsTableError } from './TransactionsTableError';
-import { Pagination } from './Pagination';
+import { TransactionsTableSkeleton } from 'components/dedicated/TransactionsTableSkeleton/TransactionsTableSkeleton';
+import { TransactionsTableError } from 'components/dedicated/TransactionsTableError/TransactionsTableError';
+import { Pagination } from 'components/dedicated/Pagination/Pagination';
 import styles from './TransactionsTable.module.scss';
 
 export const columnStyles = {

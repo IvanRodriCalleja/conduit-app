@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import cx from 'classnames';
 
-import { columnStyles } from './TransactionsTable';
+import { columnStyles } from 'components/dedicated/TransactionsTable/TransactionsTable';
 import styles from './TransactionsTableSkeleton.module.scss';
 import { useTransactionsLoading, useTransactionsIsReloading } from 'repositories/transactionsRepository';
 
